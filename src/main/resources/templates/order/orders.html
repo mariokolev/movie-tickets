@@ -6,9 +6,21 @@
 </head>
 <body>
 <div th:replace="fragments/header.html :: header"></div>
-	<div class="container mt-5">	
-	<h1 class="text-center">All orders</h1>
-       <div class="mt-4">
+	<div class="container mt-5">
+		<div class="row">
+			<h1 class="text-center">All orders</h1>
+				<div class="dropdown show ml-auto">
+					<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Show:
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a th:href="@{'/orders/page/' + ${currentPage} + '/size/10'}" class="dropdown-item">10</a>
+						<a th:href="@{'/orders/page/' + ${currentPage} + '/size/25'}" class="dropdown-item">25</a>
+						<a th:href="@{'/orders/page/' + ${currentPage} + '/size/50'}" class="dropdown-item">50</a>
+					</div>
+				</div>
+		</div>
+       <div>
 	       	<table class="table">
 	        	<thead>
 	            	<tr>
@@ -27,17 +39,17 @@
 	                </tr>
 	           	</tbody>
 	           </table>
-	           <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
-			    <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
-			      <a class="page-link" th:href="@{'/orders/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
-			    </li>
-			    <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
-			    	<a th:href="@{'/orders/page/' + ${number}}" class="page-link">[[${number}]]</a>
-			    </li>
-			    <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
-			      <a th:href="@{'/orders/page/' + ${currentPage + 1}}" class="page-link">Next</a>
-			    </li>
-			  </ul>
+		   <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
+			   <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
+				   <a class="page-link" th:href="@{'/orders/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
+			   </li>
+			   <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
+				   <a th:href="@{'/orders/page/' + ${number} + '/size/' + ${size}}" class="page-link">[[${number}]]</a>
+			   </li>
+			   <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
+				   <a th:href="@{'/orders/page/' + ${currentPage + 1} + '/size/' + ${size}}" class="page-link">Next</a>
+			   </li>
+		   </ul>
         </div>
 	</div>
 <footer th:replace="fragments/footer.html :: footer"></footer>
