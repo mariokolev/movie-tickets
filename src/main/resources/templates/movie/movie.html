@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html_head">
+	<title>Home</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+<form th:action="@{/orders/add}" method="post" action="#">
+	<div class="form-group">
+		<input type="hidden" th:field="*{movie.id}" readonly="readonly"/>
+		<ul>
+			<li th:text="${movie.movieName}"> </li>
+			<li th:text="${movie.genre.genreName}"> </li>
+			<li th:text="${movie.description}"> </li>
+			<li>
+			    <input type="text" name="boughtTickets">
+			    <button type="submit">Order</button>					
+		   </li>
+		</ul>
+	</div>
+</form>
+</body>
+</html>

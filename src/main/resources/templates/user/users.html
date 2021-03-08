@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html_head">
+	<title>Home</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+	<div class="container text-center mt-5">
+		<div class="row">
+		<h1 class="text-center">All users</h1>
+		<div class="ml-auto">
+			<a th:href="@{/users/create}" class="btn btn-primary">Create User</a>
+       	</div>
+       	<div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Show: 
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" th:href="@{/users/page/ + '${currentPage} + '/size/' + 10}">10</a>
+		    <a class="dropdown-item" href="#">Another action</a>
+		    <a class="dropdown-item" href="#">Something else here</a>
+		  </div>
+		</div>
+       </div>
+       <div>
+	       	<table class="table">
+	        	<thead>
+	            	<tr>
+	                	<th>Username</th>
+	                    <th>Email</th>
+	                    <th>First name</th>
+	                    <th>Last name</th>
+	                    <th>Date created</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<tr th:each="user : ${users}">
+	                    <td th:text="${user.username}">Name</td>
+	                    <td th:text="${user.email}">Email</td>
+	                    <td th:text="${user.firstName}">First name</td>
+	                    <td th:text="${user.lastName}">Last name</td>
+	                    <td th:text="${user.dateCreated}">Date created</td>
+	                </tr>
+	           	</tbody>
+	           </table>
+	           <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
+			    <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
+			      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
+			    </li>
+			    <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
+			    	<a th:href="@{'/users/page/' + ${number}}" class="page-link">[[${number}]]</a>
+			    </li>
+			    <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
+			      <a th:href="@{'/users/page/' + ${currentPage + 1}}" class="page-link">Next</a>
+			    </li>
+			  </ul>
+        </div>
+	</div>
+</body>
+</html>

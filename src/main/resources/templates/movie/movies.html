@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html_head">
+	<title>Home</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+	<div class="container text-center mt-5">	
+	<h1>Movie Tickets</h1>
+       <div class="mt-4">
+	       	<table class="table">
+	        	<thead>
+	            	<tr>
+	                	<th>Name</th>
+	                    <th>Genre</th>
+	                    <th>Price</th>
+	                    <th>Tickets</th>
+	                    <th sec:authorize="hasAuthority('ADMIN')">Edit</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<tr th:each="movie : ${movies}">
+	                	<td>
+	                		<a th:href="@{/movies/{id}(id=${movie.id})}" th:text="${movie.movieName}"></a>
+	                	</td>
+	                    <td th:text="${movie.genre.genreName}">Genre</td>
+	                    <td th:text="${movie.ticketPrice} + '$'">Price</td>
+	                    <td th:text="${movie.availableTickets}" th:data-tickets="${movie.availableTickets}">Tickets</td>
+	                    <td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-outline-primary">Edit</a></td>
+	                </tr>
+	           	</tbody>
+	           </table>
+	           
+	           <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
+			    <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
+			      <a class="page-link" th:href="@{'/movies/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
+			    </li>
+			    <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
+			    	<a th:href="@{'/movies/page/' + ${number}}" class="page-link">[[${number}]]</a>
+			    </li>
+			    <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
+			      <a th:href="@{'/movies/page/' + ${currentPage + 1}}" class="page-link">Next</a>
+			    </li>
+			  </ul>
+        </div>
+	</div>
+</body>
+</html>

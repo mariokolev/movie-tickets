@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header.html :: html_head">
+	<title>Home</title>
+</head>
+<body>
+<div th:include="fragments/header.html :: header"></div>
+	<h1>Index Page</h1>
+	<ul>
+		<li> <a th:href="@{/users}">See all users</a> </li>
+		<li> <a th:href="@{/orders}">See all orders</a> </li>
+		<li> <a th:href="@{/movies}">See all movies</a> </li>
+	</ul>
+
+</body>
+</html>

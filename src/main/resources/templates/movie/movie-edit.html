@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html_head">
+	<title>Home</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+<div class="container mt-5" style="max-width: 500px">
+	<h1>Edit movie</h1>
+	<form th:action="@{/movies/update}" method="post" action="#">
+		<div class="form-group">
+			<input type="hidden" th:field="*{movie.id}" readonly="readonly"/>
+			<label for="movieNameInput">Movie name</label>
+			<input type="text" class="form-control" id="movieNameInput" th:field="*{movie.movieName}" />
+		</div>
+		<div class="form-group">
+			<label for="genreNameSelect">Genre</label>
+			<select class="form-control" id="genreNameSelect" th:field="*{movie.genre.id}">
+				<option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.genreName}"> </option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="descriptionTextArea">Description</label>
+			<textarea class="form-control" id="descriptionTextArea" rows="3" th:field="*{movie.description}"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="ticketsInput">Tickets</label>
+			<input type="number" id="ticketsInput" class="form-control" th:field="*{movie.availableTickets}" />
+		</div>
+		<div class="form-group">
+			<label for="ticketPriceInput">Ticket Price</label>
+			<input type="number" id="ticketPriceInput" class="form-control" step="0.01" th:field="*{movie.ticketPrice}" /> 
+		</div>
+		<button type="submit" class="btn btn-primary">Update</button>
+	</form>
+</div>
+</body>
+</html>
