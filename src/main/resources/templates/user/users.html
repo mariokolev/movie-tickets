@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header.html :: html_head">
-	<title>Home</title>
+	<title>Users</title>
 </head>
 <body>
 <div th:replace="fragments/header.html :: header"></div>
@@ -12,16 +12,16 @@
 		<div class="ml-auto">
 			<a th:href="@{/users/create}" class="btn btn-primary">Create User</a>
        	</div>
-       	<div class="dropdown">
-		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Show: 
-		  </button>
-		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		    <a class="dropdown-item" th:href="@{/users/page/ + '${currentPage} + '/size/' + 10}">10</a>
-		    <a class="dropdown-item" href="#">Another action</a>
-		    <a class="dropdown-item" href="#">Something else here</a>
-		  </div>
-		</div>
+			<div class="dropdown show ml-2">
+				<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Show:
+				</a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					<a th:href="@{'/users/page/' + ${currentPage} + '/size/10'}" class="dropdown-item">10</a>
+					<a th:href="@{'/users/page/' + ${currentPage} + '/size/25'}" class="dropdown-item">25</a>
+					<a th:href="@{'/users/page/' + ${currentPage} + '/size/50'}" class="dropdown-item">50</a>
+				</div>
+			</div>
        </div>
        <div>
 	       	<table class="table">
@@ -46,16 +46,17 @@
 	           </table>
 	           <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
 			    <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
-			      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
+			      <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
 			    </li>
 			    <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
-			    	<a th:href="@{'/users/page/' + ${number}}" class="page-link">[[${number}]]</a>
+			    	<a th:href="@{'/users/page/' + ${number} + '/size/' + ${size}}" class="page-link">[[${number}]]</a>
 			    </li>
 			    <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
-			      <a th:href="@{'/users/page/' + ${currentPage + 1}}" class="page-link">Next</a>
+			      <a th:href="@{'/users/page/' + ${currentPage + 1} + '/size/' + ${size}}" class="page-link">Next</a>
 			    </li>
 			  </ul>
         </div>
 	</div>
+	<footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
 </html>
