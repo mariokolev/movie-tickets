@@ -46,18 +46,18 @@
 	                </tr>
 	           	</tbody>
 	           </table>
-	           
-	           <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
-			    <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
-			      <a class="page-link" th:href="@{'/movies/page/' + ${currentPage - 1}}" tabindex="-1">Previous</a>
-			    </li>
-			    <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
-			    	<a th:href="@{'/movies/page/' + ${number}}" class="page-link">[[${number}]]</a>
-			    </li>
-			    <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
-			      <a th:href="@{'/movies/page/' + ${currentPage + 1}}" class="page-link">Next</a>
-			    </li>
-			  </ul>
+
+		   <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
+			   <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
+				   <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
+			   </li>
+			   <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
+				   <a th:href="@{'/movies/page/' + ${number} + '/size/' + ${size}}" class="page-link">[[${number}]]</a>
+			   </li>
+			   <li th:class="'page-item '+${currentPage == totalPages ? 'disabled' : ''}">
+				   <a th:href="@{'/movies/page/' + ${currentPage + 1} + '/size/' + ${size}}" class="page-link">Next</a>
+			   </li>
+		   </ul>
         </div>
 	</div>
 <footer th:replace="fragments/footer.html :: footer"></footer>
