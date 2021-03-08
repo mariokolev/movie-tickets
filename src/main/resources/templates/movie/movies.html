@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/header.html :: html_head">
 	<title>Home</title>
 </head>
 <body>
 <div th:replace="fragments/header.html :: header"></div>
-	<div class="container text-center mt-5">	
-	<h1>Movie Tickets</h1>
+	<div class="container text-center mt-5">
+		<div class="row">
+			<h1 class="text-center">Movie Tickets</h1>
+			<div class="ml-auto">
+				<a th:href="@{/movies/add}" class="btn btn-primary">Add Movie</a>
+			</div>
+			<div class="dropdown show ml-2">
+				<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Show:
+				</a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					<a th:href="@{'/movies/page/' + ${currentPage} + '/size/10'}" class="dropdown-item">10</a>
+					<a th:href="@{'/movies/page/' + ${currentPage} + '/size/25'}" class="dropdown-item">25</a>
+					<a th:href="@{'/movies/page/' + ${currentPage} + '/size/50'}" class="dropdown-item">50</a>
+				</div>
+			</div>
+		</div>
        <div class="mt-4">
 	       	<table class="table">
 	        	<thead>
@@ -45,5 +60,6 @@
 			  </ul>
         </div>
 	</div>
+<footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
 </html>

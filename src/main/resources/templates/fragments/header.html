@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="html_head">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,27 +17,15 @@
 		
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
-		      <li class="nav-item active">
+		      <li class="nav-item">
 		        <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
 		      </li>
-		      <li class="nav-item dropdown" >
-		        <a class="nav-link dropdown-toggle" style="display:block" id="moviesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		          Movies
-		        </a>
-		        <div class="dropdown-menu" aria-labelledby="moviesDropdown">
-		          <a class="dropdown-item" th:href="@{/movies}">All movies</a>
-		          <a class="dropdown-item" th:href="@{/movies/add}">Add movies</a>
-		        </div>
-		      </li>
-		      <li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
-		        <a class="nav-link dropdown-toggle" style="display:block" id="usersDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		          Users
-		        </a>
-		        <div class="dropdown-menu" aria-labelledby="usersDropdown">
-		          <a class="dropdown-item" th:href="@{/users}">All Users</a>
-		          <a class="dropdown-item" th:href="@{/users/create}">Create User</a>
-		        </div>
-		      </li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/movies}">Movies</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/users}">Users</a>
+				</li>
 		      <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
 		        <a class="nav-link" th:href="@{/orders}">Orders</a>
 		      </li>
