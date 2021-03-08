@@ -35,12 +35,11 @@ public class MovieController {
 	
 	@GetMapping
 	public String viewAllMovies(Model model) {
-		return viewPaginatedMovies(1, model);
+		return viewPaginatedMovies(1,10, model);
 	}
 	
-	@GetMapping("/page/{page}")
-	public String viewPaginatedMovies(@PathVariable("page")int page, Model model) {
-		int size = 5;
+	@GetMapping("/page/{page}/size/{size}")
+	public String viewPaginatedMovies(@PathVariable("page")int page, @PathVariable("size") int size, Model model) {
 		Page<Movie> currentPage = movieService.findPaginated(page, size);
 		List<Movie> movies = currentPage.getContent();
 		
@@ -75,7 +74,6 @@ public class MovieController {
 	
 	@PostMapping(value = "/add")
 	public String addMovie(@ModelAttribute("movie") Movie movie,@RequestParam("image") MultipartFile file) throws IOException{
-//		movie.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
 		movieService.saveMovie(movie);
 		return "redirect:/movies";
 	}

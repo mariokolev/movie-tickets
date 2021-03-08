@@ -53,6 +53,7 @@ public class UserController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", currentPage.getTotalPages());
 		model.addAttribute("totalItems", currentPage.getTotalElements());
+		model.addAttribute("size", size);
 		model.addAttribute("users", users);
 		
 		return "user/users";

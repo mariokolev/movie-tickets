@@ -45,18 +45,18 @@ public class OrderController {
 	@GetMapping
 	public String viewOrders(Model model) {
 		model.addAttribute("orders", orderService.findAll());
-		return viewPaginatedOrders(1, model);
+		return viewPaginatedOrders(1, 10, model);
 	}
-	
-	@GetMapping("/page/{page}")
-	public String viewPaginatedOrders(@PathVariable("page") int page, Model model) {
-		int size = 5;
+
+	@GetMapping("/page/{page}/size/{size}")
+	public String viewPaginatedOrders(@PathVariable("page") int page,@PathVariable("size") int size, Model model) {
 		Page <Order> currentPage = orderService.findPaginated(page, size);
 		List<Order> orders = currentPage.getContent();
 		
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", currentPage.getTotalPages());
 		model.addAttribute("totalItems", currentPage.getTotalElements());
+		model.addAttribute("size", size);
 		model.addAttribute("orders", orders);
 		return "order/orders";
 	}
