@@ -3,6 +3,8 @@ package com.mario.movietickets.controllers;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+
+import com.mario.movietickets.entities.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -73,8 +75,14 @@ public class MovieController {
 		return "movie/movie-add";
 	}
 	
-	@PostMapping(value = "/add")
-	public String addMovie(@ModelAttribute("movie") Movie movie,@RequestParam("image") MultipartFile file) throws IOException{
+	@PostMapping(value = "/add",  headers = "content-type=multipart/form-data")
+	public String addMovie(@ModelAttribute("movie") Movie movie,@RequestParam("movieImage") MultipartFile file) throws IOException{
+		Image image = new Image();
+		image.setName(file.getName());
+		image.setImageBytes(file.getBytes());
+		image.setType(file.getContentType());
+
+		movie.setImage(image);
 		movieService.saveMovie(movie);
 		return "redirect:/movies";
 	}
