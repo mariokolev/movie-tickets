@@ -44,11 +44,11 @@
 	                		<a class="h5" th:href="@{/movies/{id}(id=${movie.id})}" th:text="${movie.movieName}"></a>
 	                	</td>
 	                    <td class="align-middle" th:text="${movie.ticketPrice} + '$'">Price</td>
-	                    <td class="align-middle" th:text="${movie.availableTickets}" th:data-tickets="${movie.availableTickets}">Tickets</td>
+	                    <td class="align-middle available-tickets" th:text="${movie.availableTickets}" th:data-id="${movie.id}">Tickets</td>
 						<td class="align-middle">
 							<div class="form-inline justify-content-center">
-									<input type="number" class="form-control mr-sm-2" />
-									<a href="#" class="btn btn-outline-success my-2 my-sm-0">Order</a>
+									<input type="number" class="form-control mr-sm-2 ordered-tickets" th:data-id="${movie.id}"/>
+									<a th:attr="onclick=|makeOrder('${movie.id}')|" class="btn btn-outline-success my-2 my-sm-0">Order</a>
 							</div>
 						</td>
 	                    <td class="align-middle" sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-outline-primary">Edit</a></td>
@@ -69,6 +69,32 @@
 		   </ul>
         </div>
 	</div>
+<script type="text/javascript">
+
+	const makeOrder = (id) => {
+		var availableTickets = document.body.querySelector(`.available-tickets[data-id="${id}"]`);
+		var orderedTickets = document.body.querySelector(`.ordered-tickets[data-id="${id}"]`);
+
+		const order = {
+						movieId: id,
+						tickets: orderedTickets.value
+						};
+
+		 fetch('/orders/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+          availableTickets.innerHTML = data;
+          orderedTickets.value = '';
+        })
+        .catch(err => console.log(err));
+	}
+</script>
 <footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
 </html>
