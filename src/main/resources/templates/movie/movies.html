@@ -29,9 +29,9 @@
 	            	<tr>
 						<th>Cover</th>
 	                	<th>Title</th>
-	                    <th>Genre</th>
 	                    <th>Price</th>
 	                    <th>Tickets</th>
+						<th>Order</th>
 	                    <th sec:authorize="hasAuthority('ADMIN')">Edit</th>
 	                </tr>
 	            </thead>
@@ -43,9 +43,18 @@
 	                	<td class="align-middle">
 	                		<a class="h5" th:href="@{/movies/{id}(id=${movie.id})}" th:text="${movie.movieName}"></a>
 	                	</td>
-	                    <td class="align-middle" th:text="${movie.genre.genreName}">Genre</td>
 	                    <td class="align-middle" th:text="${movie.ticketPrice} + '$'">Price</td>
-	                    <td class="align-middle" th:text="${movie.availableTickets}" th:data-tickets="${movie.availableTickets}">Tickets</td>
+	                    <td class="align-middle available-tickets" th:text="${movie.availableTickets}" th:data-id="${movie.id}">Tickets</td>
+						<td class="align-middle">
+							<div class="alert alert-warning alert-dismissible fade show" role="alert" th:data-id="${movie.id}" style="display:none;">
+								<strong>Not enough tickets</strong>
+							</div>
+
+							<div class="form-inline justify-content-center">
+									<input type="number" class="form-control mr-sm-2 ordered-tickets" th:data-id="${movie.id}"/>
+									<a th:attr="onclick=|makeOrder('${movie.id}')|" class="btn btn-outline-success my-2 my-sm-0">Order</a>
+							</div>
+						</td>
 	                    <td class="align-middle" sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-outline-primary">Edit</a></td>
 	                </tr>
 	           	</tbody>
@@ -53,7 +62,7 @@
 
 		   <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
 			   <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
-				   <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
+				   <a class="page-link" th:href="@{'/movies/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
 			   </li>
 			   <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
 				   <a th:href="@{'/movies/page/' + ${number} + '/size/' + ${size}}" class="page-link">[[${number}]]</a>
@@ -64,6 +73,40 @@
 		   </ul>
         </div>
 	</div>
+<script type="text/javascript">
+
+	const makeOrder = (id) => {
+		var availableTickets = document.body.querySelector(`.available-tickets[data-id="${id}"]`);
+		var orderedTickets = document.body.querySelector(`.ordered-tickets[data-id="${id}"]`);
+		var alert = document.body.querySelector(`.alert[data-id="${id}"]`);
+
+		if(parseInt(availableTickets.innerHTML) < orderedTickets.value){
+			alert.style.display = "block";
+			orderedTickets.value = '';
+			setTimeout(function(){ alert.style.display="none"}, 3000);
+		}else{
+			const order = {
+							movieId: id,
+							tickets: orderedTickets.value
+							};
+
+			fetch('/orders/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type' : 'application/json'
+				},
+				body: JSON.stringify(order)
+			})
+			.then((res) => res.json())
+			.then((data) =>{
+			  availableTickets.innerHTML = data;
+			  orderedTickets.value= '';
+			})
+			.catch(err => console.log(err));
+		}
+
+	}
+</script>
 <footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
 </html>
