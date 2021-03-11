@@ -5,21 +5,20 @@
 	<title>Home</title>
 </head>
 <body>
-<div th:replace="fragments/header.html :: header"></div>
-<form th:action="@{/orders/add}" method="post" action="#">
-	<div class="form-group">
-		<input type="hidden" th:field="*{movie.id}" readonly="readonly"/>
-		<ul>
-			<li th:text="${movie.movieName}"> </li>
-			<li th:text="${movie.genre.genreName}"> </li>
-			<li th:text="${movie.description}"> </li>
-			<li>
-			    <input type="text" name="boughtTickets">
-			    <button type="submit">Order</button>					
-		   </li>
-		</ul>
+	<div th:replace="fragments/header.html :: header"></div>
+	<div class="container mt-5">
+		<h1 class="h1 text-center" th:text="${movie.movieName}"></h1>
+		<h4 class="h4 text-center font-weight-light" th:text="${movie.genre.genreName}"></h4>
+		<div class="row mt-5">
+			<div class="col text-center">
+				<img class="rounded" style="max-width:400px; object-fit:cover;" th:src="@{/movies/image/{id}(id=${movie.id})}"/>
+			</div>
+			<div class="col">
+				<h4 class="h4 font-weight-normal">Storyline</h4>
+				<p class="mt-4" th:text="${movie.description}"></p>
+			</div>
+		</div>
 	</div>
-</form>
-<footer th:replace="fragments/footer.html :: footer"></footer>
+	<footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
 </html>
