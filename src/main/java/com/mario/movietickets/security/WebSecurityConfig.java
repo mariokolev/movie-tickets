@@ -55,6 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login").permitAll()
 		.and()
 		.logout().permitAll();
+
+		http.csrf().disable().cors();
 	}
 	
 	
