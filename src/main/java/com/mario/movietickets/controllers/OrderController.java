@@ -5,18 +5,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.mario.movietickets.entities.Movie;
 import com.mario.movietickets.entities.Order;
@@ -67,11 +67,14 @@ public class OrderController {
 		return "order/orders-user";
 	}
 	
-	@PostMapping("/add")
-	public String addOrder(@ModelAttribute("movie") Movie movie,
-							@RequestParam("boughtTickets") Integer tickets){
-		
-		orderService.saveOrder(movie.getId(), tickets);
-		return "order/order-success";
+	@PostMapping(value ="/add", produces = "application/json")
+	@ResponseBody
+	public String addOrder(@RequestBody String json) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode jsonNode = mapper.readTree(json);
+
+		orderService.saveOrder(jsonNode.get("movieId").asLong(), jsonNode.get("tickets").asInt());
+
+		return movieService.findById(jsonNode.get("movieId").asLong()).getAvailableTickets().toString();
 	}
 }
