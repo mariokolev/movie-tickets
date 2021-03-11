@@ -1,18 +1,15 @@
 package com.mario.movietickets.controllers;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
+import com.mario.movietickets.entities.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.mario.movietickets.entities.Movie;
@@ -73,11 +70,24 @@ public class MovieController {
 		return "movie/movie-add";
 	}
 	
-	@PostMapping(value = "/add")
-	public String addMovie(@ModelAttribute("movie") Movie movie,@RequestParam("image") MultipartFile file) throws IOException{
+	@PostMapping(value = "/add",  headers = "content-type=multipart/form-data")
+	public String addMovie(@ModelAttribute("movie") Movie movie,@RequestParam("movieImage") MultipartFile file) throws IOException{
+		Image image = new Image();
+		image.setName(file.getName());
+		image.setImageBytes(file.getBytes());
+		image.setType(file.getContentType());
+
+		movie.setImage(image);
 		movieService.saveMovie(movie);
 		return "redirect:/movies";
 	}
+
+	@GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> getImage(@PathVariable("id") Long movieId){
+		byte[] bytes = movieService.findById(movieId).getImage().getImageBytes();
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
+	}
+
 	
 	@GetMapping("/{id}")
 	public String viewMovie(@PathVariable("id") Long id, Model model) {
