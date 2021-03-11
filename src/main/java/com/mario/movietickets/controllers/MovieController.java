@@ -57,8 +57,14 @@ public class MovieController {
 	}
 
 	@PostMapping("/update")
-    public String updateMovie(@ModelAttribute("movie") Movie movie){
-        movieService.updateMovie(movie);
+    public String updateMovie(@ModelAttribute("movie") Movie movie, @RequestParam("movieImage") MultipartFile file) throws IOException {
+		Image image = new Image();
+		image.setName(file.getName());
+		image.setImageBytes(file.getBytes());
+		image.setType(file.getContentType());
+
+		movie.setImage(image);
+		movieService.updateMovie(movie);
         return "redirect:/movies";
     }
 	

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.transaction.Transactional;
+
+import com.mario.movietickets.entities.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,6 +67,7 @@ public class MovieService {
 		updateAvailableTickets(movie.getAvailableTickets(), movieOptional.get());
 		updateTicketPrice(movie.getTicketPrice(), movieOptional.get());
 		updateMovieGenre(movie.getGenre().getId(), movieOptional.get());
+		updateMovieImage(movie.getImage(), movieOptional.get());
 	}
 	
 	private void updateMovieName(String movieName, Movie movie) {
@@ -111,6 +114,14 @@ public class MovieService {
 			}else {
 				throw new IllegalStateException("Genre with id[" + genreId + "] doesn't exists!");
 			}
+		}
+	}
+
+	private void updateMovieImage(Image image, Movie movie){
+		if(image != null &&
+				image.getImageBytes().length > 0 &&
+			!Objects.equals(image, movie.getImage())){
+			movie.setImage(image);
 		}
 	}
 }
