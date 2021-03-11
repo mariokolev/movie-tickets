@@ -58,7 +58,7 @@
 
 		   <ul th:if="${totalPages > 1}" class="pagination justify-content-end">
 			   <li th:class="'page-item '+${currentPage == 1 ? 'disabled' : ''}">
-				   <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
+				   <a class="page-link" th:href="@{'/movies/page/' + ${currentPage - 1} + '/size/' + ${size}}" tabindex="-1">Previous</a>
 			   </li>
 			   <li th:each="number : ${#numbers.sequence(1, totalPages)}" th:class="'page-item '+${number == currentPage? 'disabled' : '' }">
 				   <a th:href="@{'/movies/page/' + ${number} + '/size/' + ${size}}" class="page-link">[[${number}]]</a>
