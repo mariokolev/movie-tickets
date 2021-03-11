@@ -58,8 +58,6 @@ public class OrderService {
 		  username = principal.toString();
 		}
 		
-		System.out.println(username);
-
 		Order order = new Order();
 		Movie movieOptional = movieRepository.findById(movieId).get();
 		
